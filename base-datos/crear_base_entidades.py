@@ -17,6 +17,13 @@ class Facultad(Base):
         "Carrera", back_populates="facultad", cascade="all, delete-orphan"
     )
 
+    def __repr__(self):
+        return "Facultad: Nombre: %s, Ubicacion: %s, Decano: %s" % (
+            self.nombre,
+            self.ubicacion,
+            self.decano,
+        )
+
 
 class Carrera(Base):
     __tablename__ = "carrera"
@@ -30,6 +37,13 @@ class Carrera(Base):
     profesores = relationship(
         "Profesor", back_populates="carrera", cascade="all, delete-orphan"
     )
+
+    def __repr__(self):
+        return "Carrera: Nombre: %s, Codigo: %s, Facultad: %s" % (
+            self.nombre,
+            self.codigo,
+            self.facultad.nombre,
+        )
 
 
 class Profesor(Base):
@@ -47,6 +61,15 @@ class Profesor(Base):
         "RecursoAcademico", back_populates="profesor", cascade="all, delete-orphan"
     )
 
+    def __repr__(self):
+        return "Profesor: Nombre: %s %s, Correo: %s, Especialidad: %s, Carrera: %s" % (
+            self.nombres,
+            self.apellidos,
+            self.correo,
+            self.especialidad,
+            self.carrera.nombre,
+        )
+
 
 class RecursoAcademico(Base):
     __tablename__ = "recurso_academico"
@@ -59,6 +82,15 @@ class RecursoAcademico(Base):
     profesor_id = Column(Integer, ForeignKey("profesor.id"), nullable=False)
 
     profesor = relationship("Profesor", back_populates="recursos")
+
+    def __repr__(self):
+        return "Recurso: Titulo: %s, Fecha: %s, Tipo: %s, Profesor: %s %s" % (
+            self.titulo,
+            self.fecha_publicacion,
+            self.tipo,
+            self.profesor.nombres,
+            self.profesor.apellidos,
+        )
 
 
 if __name__ == "__main__":
